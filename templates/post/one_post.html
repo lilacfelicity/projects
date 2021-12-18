@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% block title %}My Blog ,t,t,t,,t,,t{% endblock %}
+{% block content %}
+        <h1>{{post.title}}</h1>
+        <a href="">{{post.author}}</a><br>
+        <small>{{post.created}}</small><br>
+        {{ post.body}} 
+        <img src="{{post.picture}}" alt="">
+        <br>
+        {% with comments.count as total_comments %}
+        <h2>
+        {{ total_comments }} comment{{ total_comments|pluralize }}
+        </h2>
+        {% endwith %}
+
+        {% for comment in comments %}
+        <div class="Комментарий">
+                <p class="Информация">
+                Comment {{ forloop.counter }} by {{ comment.name }}
+                {{ comment.created }}
+                </p>
+                <h1>{{ comment.body|linebreaks }}</h1>
+        </div>
+
+        {% empty %}
+        <p>Комментариев нет</p>
+        {% endfor %}
+
+        {% if new_comment %}
+                <h2>Комментарий добавлен</h2>
+        {% else %}
+                <h2>Добавить новый комментарий</h2>
+                <form method="Пост">
+                        {{ comment_form.as_p }}
+                        {% csrf_token %}
+                        <p><input type="submit" value="Добавить комментарий"></p>
+                </form>
+        {% endif %}
+{% endblock %}
